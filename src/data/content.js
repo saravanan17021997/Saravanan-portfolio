@@ -5,7 +5,7 @@
 
 export const profile = {
   name: 'Saravanan R',
-  role: 'Automation Engineer',
+  role: 'Automation Analyst',
   location: 'Bengaluru, India',
   email: 'saravanan17021997@gmail.com',
   phone: '+91 86680 26319',

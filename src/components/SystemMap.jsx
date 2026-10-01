@@ -33,6 +33,7 @@ const boxClass = {
 export default function SystemMap() {
   const [selected, setSelected] = useState(null);
   const node = selected ? systemNodes[selected] : null;
+  const nodes = Object.values(systemNodes);
 
   const toggle = (id) => setSelected((cur) => (cur === id ? null : id));
 
@@ -46,75 +47,80 @@ export default function SystemMap() {
         </span>
       </div>
 
-      <svg
-        className="diagram"
-        viewBox="0 0 925 316"
-        role="img"
-        aria-label="Architecture diagram. Business Central and TrackOlap feed an n8n automation layer running on a Linux VPS, which serves a sales dashboard, a customer mobile app and WhatsApp invoice delivery, with Supabase handling authentication and storage."
-      >
-        {systemEdges.map(([from, to]) => {
-          const key = `${from}-${to}`;
-          const lit = selected === from || selected === to;
-          return (
-            <path
-              key={key}
-              className={lit ? 'wire lit' : 'wire'}
-              d={wirePath[key]}
-            />
-          );
-        })}
-
-        {Object.values(systemNodes).map((n) => {
-          const g = geo[n.id];
-          const isSel = selected === n.id;
-          return (
-            <g
-              key={n.id}
-              className={isSel ? 'node sel' : 'node'}
-              onClick={() => toggle(n.id)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  toggle(n.id);
-                }
-              }}
-              tabIndex={0}
-              role="button"
-              aria-pressed={isSel}
-              aria-label={`${n.label}. ${isSel ? 'Selected' : 'Select for detail'}`}
-            >
-              <rect
-                className={boxClass[n.kind]}
-                x={g.x}
-                y={g.y}
-                width={g.w}
-                height={g.h}
-                rx="2"
+      {/* .animate drives the one page-load sequence: boxes settle, then wires draw */}
+      <div className="diagram-scroll animate">
+        <svg
+          className="diagram"
+          viewBox="0 0 925 316"
+          role="img"
+          aria-label="Architecture diagram. Business Central and TrackOlap feed an n8n automation layer running on a Linux VPS, which serves a sales dashboard, a customer mobile app and WhatsApp invoice delivery, with Supabase handling authentication and storage."
+        >
+          {systemEdges.map(([from, to], i) => {
+            const key = `${from}-${to}`;
+            const lit = selected === from || selected === to;
+            return (
+              <path
+                key={key}
+                className={lit ? 'wire lit' : 'wire'}
+                d={wirePath[key]}
+                style={{ animationDelay: `${360 + i * 85}ms` }}
               />
-              <text className="n-label" x={g.x + 16} y={g.y + 23}>
-                {n.label}
-              </text>
-              {n.sub.split(' · ').length > 2 && n.id === 'n8n' ? (
-                <>
-                  <text className="n-sub" x={g.x + 16} y={g.y + 41}>
-                    39 workflows
-                  </text>
-                  <text className="n-sub" x={g.x + 16} y={g.y + 56}>
-                    Docker · Traefik · VPS
-                  </text>
-                </>
-              ) : (
-                <text className="n-sub" x={g.x + 16} y={g.y + 39}>
-                  {n.sub}
+            );
+          })}
+
+          {nodes.map((n, i) => {
+            const g = geo[n.id];
+            const isSel = selected === n.id;
+            return (
+              <g
+                key={n.id}
+                className={isSel ? 'node sel' : 'node'}
+                style={{ animationDelay: `${i * 70}ms` }}
+                onClick={() => toggle(n.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle(n.id);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-pressed={isSel}
+                aria-label={`${n.label}. ${isSel ? 'Selected' : 'Select for detail'}`}
+              >
+                <rect
+                  className={boxClass[n.kind]}
+                  x={g.x}
+                  y={g.y}
+                  width={g.w}
+                  height={g.h}
+                  rx="2"
+                />
+                <text className="n-label" x={g.x + 16} y={g.y + 23}>
+                  {n.label}
                 </text>
-              )}
-            </g>
-          );
-        })}
-      </svg>
+                {n.id === 'n8n' ? (
+                  <>
+                    <text className="n-sub" x={g.x + 16} y={g.y + 41}>
+                      39 workflows
+                    </text>
+                    <text className="n-sub" x={g.x + 16} y={g.y + 56}>
+                      Docker · Traefik · VPS
+                    </text>
+                  </>
+                ) : (
+                  <text className="n-sub" x={g.x + 16} y={g.y + 39}>
+                    {n.sub}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+      </div>
 
       {node ? (
-        <div className="detail">
+        <div className="detail" key={node.id}>
           <button
             className="detail-close"
             onClick={() => setSelected(null)}
@@ -131,7 +137,10 @@ export default function SystemMap() {
           </ul>
         </div>
       ) : (
-        <p className="hint">Select any box to see what it does and what I built there.</p>
+        <p className="hint">
+          Select any box to see what it does and what I built there.
+          <span className="hint-scroll"> Scroll the diagram sideways to see it all.</span>
+        </p>
       )}
     </div>
   );
