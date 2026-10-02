@@ -38,7 +38,7 @@ export default function SystemMap() {
   const toggle = (id) => setSelected((cur) => (cur === id ? null : id));
 
   return (
-    <div className="map">
+    <div className="map glass">
       <div className="map-cap">
         <span>What I built and run</span>
         <span className="pulse">

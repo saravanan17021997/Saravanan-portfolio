@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import SystemMap from './components/SystemMap';
 import {
   profile,
@@ -7,9 +8,42 @@ import {
   education,
 } from './data/content';
 
+function initialTheme() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch {
+    /* private browsing or blocked storage — fall through */
+  }
+  try {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  } catch {
+    /* no matchMedia — fall through */
+  }
+  return 'light';
+}
+
 export default function App() {
+  const [theme, setTheme] = useState(initialTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      /* storage unavailable — the theme still applies for this visit */
+    }
+  }, [theme]);
+
   return (
-    <div className="wrap">
+    <>
+      <div className="ambient" aria-hidden="true">
+        <span className="blob blob-a" />
+        <span className="blob blob-b" />
+        <span className="blob blob-c" />
+      </div>
+
+      <div className="wrap">
       <header className="header">
         <div className="idbar">
           <div>
@@ -18,10 +52,20 @@ export default function App() {
               {profile.role} — {profile.location}
             </div>
           </div>
-          <div className="meta">
-            <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <br />
-            <a href={`tel:${profile.phoneHref}`}>{profile.phone}</a>
+
+          <div className="meta-col">
+            <button
+              className="theme-btn"
+              onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
+              {theme === 'dark' ? 'Light' : 'Dark'}
+            </button>
+            <div className="meta">
+              <a href={`mailto:${profile.email}`}>{profile.email}</a>
+              <br />
+              <a href={`tel:${profile.phoneHref}`}>{profile.phone}</a>
+            </div>
           </div>
         </div>
 
@@ -42,7 +86,7 @@ export default function App() {
         <h2 className="section-head">Selected work</h2>
         <div className="cases">
           {caseStudies.map((c) => (
-            <article className="case" key={c.title}>
+            <article className="case glass" key={c.title}>
               <div className="case-top">
                 <h3>{c.title}</h3>
                 <span className="tag">{c.tag}</span>
@@ -117,6 +161,7 @@ export default function App() {
           <a href={profile.resume}>Resume</a>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }
