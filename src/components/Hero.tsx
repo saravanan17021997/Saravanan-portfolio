@@ -37,14 +37,14 @@ export default function Hero({ onPlay, onResume, profileId }: { onPlay: () => vo
   const glowX = useTransform(px, [-1, 1], ['-6%', '6%']);
 
   const meta = [
-    '7+ years',
+    '9+ years',
     'Automation Engineer',
     `${projects.length} Originals`,
     'n8n · WhatsApp · ERP',
   ];
 
   const floating = [
-    { text: '7+ years', sub: 'Work experience', pos: 'left-[2%] top-[30%]', depth: 1 },
+    { text: '9+ years', sub: 'Work experience', pos: 'left-[2%] top-[30%]', depth: 1 },
     { text: `${achievements[0].title}`, sub: achievements[0].org, pos: 'right-[0%] top-[18%]', depth: -1 },
     { text: 'n8n · Supabase · React', sub: 'Primary stack', pos: 'right-[4%] bottom-[24%]', depth: 0.6 },
   ];

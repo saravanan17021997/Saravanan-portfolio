@@ -1,5 +1,5 @@
 /**
- * Central portfolio data — generated from Saravanan R's resume (Saravanan_R_Automation_Engineer.pdf).
+ * Central portfolio data — generated from Devi  R's resume (Saravanan_R_Automation_Engineer.pdf).
  * Every fact on the site comes from this file. Update it here and the whole site follows.
  * Nothing here is added unless it appears on the resume.
  */
@@ -22,7 +22,7 @@ export const profile = {
   role: 'Automation Engineer',
   tagline: ['Automation Engineer', 'n8n', 'Business Central'],
   intro:
-    'Automation Engineer with 7+ years of work experience, including 1.5+ years building end-to-end automation systems for a computer hardware distributor. Built workflow automation in n8n, ERP integration with Microsoft Dynamics 365 Business Central, WhatsApp automation, a sales dashboard, a customer mobile app and AI chatbots. Comfortable working from the database and API layer to the frontend and mobile delivery.',
+    'Automation Engineer with 9+ years of work experience, including 2.5+ years building end-to-end automation systems for a computer hardware distributor. Built workflow automation in n8n, ERP integration with Microsoft Dynamics 365 Business Central, WhatsApp automation, a sales dashboard, a customer mobile app and AI chatbots. Comfortable working from the database and API layer to the frontend and mobile delivery.',
   location: 'Bengaluru, Karnataka',
   email: 'saravanan17021997@gmail.com',
   phone: '8668026319',
@@ -477,7 +477,7 @@ export const topPicks: TopPick[] = [
   { label: 'Published', title: 'Google Play', detail: 'Customer mobile app and PWA', palette: ocean },
   { label: 'Backend', title: 'Supabase', detail: 'OTP login and app backend', palette: violet },
   { label: 'AI', title: 'Chatbase', detail: 'Multiple LLM models, refined prompts', palette: crimson },
-  { label: 'Experience', title: '7+ years', detail: 'Work experience', palette: amber },
+  { label: 'Experience', title: '9+ years', detail: 'Work experience', palette: amber },
   { label: 'Leadership', title: 'Shift Lead', detail: 'Stats Perform', palette: ocean },
 ];
 
